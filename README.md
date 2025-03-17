@@ -1,3 +1,6 @@
+[![JSR](https://jsr.io/badges/@aburd/broadcaster)](https://jsr.io/@aburd/broadcaster)
+[![JSR Score](https://jsr.io/badges/@aburd/broadcaster/score)](https://jsr.io/@aburd/broadcaster)
+
 # Broadcaster
 
 An opinionated deno websockets library to help you manage websocket connections so you can start sending structured messages!
