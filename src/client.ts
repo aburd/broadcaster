@@ -1,3 +1,27 @@
+/**
+ * 
+ * Code to set up a WebSocket client with a type-checked interface
+ * 
+ * ```ts
+ * import { connect } from "@aburd/broadcaster";
+ * import { ClientHandlers, ServerHandlers } from "./my-socket-interface.ts";
+ * 
+ * const socket = await connect<ClientHandlers, ServerHandlers>(`${location.origin}/ws`);
+ * socket.setHandlersForSocket({
+ *   "foo_changed": (data, socket) => {
+ *     // do something with updated data.foo or data.error
+ *     //
+ *     socket.send({ key: "bar_event", data: { baz: 1 } }); // TypeError - baz needs to be a string
+ *     socket.send({ key: "bar", data: { baz: "yay" } }); // OK!
+ *   },
+ *   "foo_event": (data, socket) => {
+ *     // data is null
+ *   },
+ * });
+ * ```
+ *
+ * @module
+ */
 import type {
   ClientHandler,
   ClientSocket,
@@ -5,6 +29,9 @@ import type {
   ServerHandler,
 } from "./types.ts";
 
+/**
+ * Options for connecting to the WebSocket with connect
+ */
 export type ConnectOpts = {
   onOpen?: (e: Event) => void;
   onClose?: (e: CloseEvent) => void;

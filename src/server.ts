@@ -1,3 +1,61 @@
+/**
+ * 
+ * Code to set up a WebSocketGroup on a websocket server with a type-checked interface
+ * 
+ * ```ts
+ * import { createSocketGroup } from "@aburd/broadcaster";
+ * import { ClientHandlers, ServerHandlers } from "./my-socket-interface.ts";
+ * import { Foo } from "./types";
+ * 
+ * let myFoo: Foo = { name: "my_foo" }
+ * 
+ * const socketGroup = createSocketGroup<ServerHandlers, ClientHandlers>()
+ * 
+ * Deno.serve(async (_req) => {
+ *   const url = new URL(req.url);
+ * 
+ *   if (url.pathname === "/ws") {
+ *     if (req.headers.get("Upgrade") !== "websocket") {
+ *       return new Response(null, { status: 501 });
+ *     }
+ *     // somehow identify this socket
+ *     const id = getId(req);
+ * 
+ *     if (socketGroup.getSocket(id)) {
+ *       // handle requests when the WebSocket is already established
+ *     }
+ * 
+ *     // will return Response to upgrade the WebSocket
+ *     const response = socketGroup.addSocket(id, req);
+ *     socketGroup.setHandlersForSocket(
+ *       id,
+ *       {
+ *         "update_foo": (data, key, socketGroup) => {
+ *           my_foo = data.foo;
+ *           // send foo_event to the client who updated foo
+ *           socketGroup.send("foo_event", { key, data: null })
+ * 
+ *           // send foo_changed to all sockets in the group
+ *           socketGroup.broadcast({ key: "foo_changed", data: { foo: myFoo } }); // TypeError - baz needs to be a string
+ *         },
+ *         "bar_event": (data, key, socketGroup) => {
+ *           // do something with data.baz
+ *           if (data.baz === "bad word") {
+ *               socketGroup.removeSocket(key);
+ *           }
+ *         },
+ *       }
+ *     );
+ * 
+ *     return response;
+ *   }
+ * 
+ *   return new Response("Default response");
+ * });
+ * ```
+ *
+ * @module
+ */
 import type {
   ClientHandler,
   Message,
