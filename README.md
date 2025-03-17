@@ -47,7 +47,7 @@ my-client.ts
 import { connect } from "@aburd/broadcaster";
 import { ClientHandlers, ServerHandlers } from "./my-socket-interface.ts";
 
-const socket = await connect<ClientHandlers, ServerHandlers>(`${location.origin}/api/ws`);
+const socket = await connect<ClientHandlers, ServerHandlers>(`${location.origin}/ws`);
 socket.setHandlersForSocket({
   "foo_changed": (data, socket) => {
     // do something with updated data.foo or data.error
