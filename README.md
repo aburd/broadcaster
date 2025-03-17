@@ -89,15 +89,8 @@ Deno.serve(async (_req) => {
   const url = new URL(req.url);
 
   if (url.pathname === "/ws") {
-    if (req.headers.get("Upgrade") !== "websocket") {
-      return new Response(null, { status: 501 });
-    }
     // somehow identify this socket
     const id = getId(req);
-
-    if (socketGroup.getSocket(id)) {
-      // handle requests when the WebSocket is already established
-    }
 
     // will return Response to upgrade the WebSocket
     const response = socketGroup.addSocket(id, req);

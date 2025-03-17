@@ -95,6 +95,14 @@ export function createSocketGroup<
       req: Request,
       denoOpts?: Deno.UpgradeWebSocketOptions,
     ): Response => {
+      if (req.headers.get("Upgrade") !== "websocket") {
+        return new Response(null, { status: 501 });
+      }
+
+      // If this socket already exists, we remove and replace it
+      if (group.getSocket(key)) {
+        group.removeSocket(key);
+      }
       const { socket, response } = Deno.upgradeWebSocket(req, denoOpts);
       if (opts.onOpen) {
         socket.onopen = () => opts?.onOpen?.(key);
@@ -106,10 +114,11 @@ export function createSocketGroup<
         };
       }
       if (opts.onError) {
-        group.removeSocket(key);
-        socket.onerror = () => opts?.onError?.(key);
+        socket.onerror = () => {
+          group.removeSocket(key);
+          opts?.onError?.(key);
+        }
       }
-
       _sockets[key] = socket;
 
       return response;
