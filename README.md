@@ -10,16 +10,25 @@ Broadcaster gives you the ability to define a few interfaces which tell you how 
 
 ## Example
 
-my-socket-interface.ts
+`my-socket-interface.ts`
 
 Here we define the interface of how clients and server will communicate.
 
-- The client can send a message of:
-  - `{ key: "get_foo", data: { fooId: <number> } }`
-  - `{ key: "something_happened", data: null }`
-- The server can send a message of:
-  - `{ key: "get_foo", data: { foo: <foo>, error: null } }`
-  - `{ key: "something_happened", data: null }`
+- The client can __handle__ a message of:
+  - `"foo_changed"`
+  - `"foo_event"`
+- The client can __send__ a message of:
+  - `"update_foo"`
+  - `"bar_event"`
+
+Meanwhile:
+
+- The server can __handle__ a message of:
+  - `"update_foo"`
+  - `"bar_event"`
+- The server can __send__ a message of:
+  - `"foo_changed"`
+  - `"foo_event"`
 
 ```ts
 import { ClientHandler, ServerHandler } from "@aburd/broadcaster";
@@ -41,7 +50,9 @@ export type ServerHandlers = {
 };
 ```
 
-my-client.ts
+`my-client.ts`
+
+Here we connect to the WebSocker server from a browser and implement the handlers we defined in our ClientHandlers interface.
 
 ```ts
 import { connect } from "@aburd/broadcaster";
@@ -61,7 +72,9 @@ socket.setHandlersForSocket({
 });
 ```
 
-my-server.ts
+`my-server.ts`
+
+Here we setup a basic WebSocket server and implement the handlers we defined in our ServerHandlers interface.
 
 ```ts
 import { createSocketGroup } from "@aburd/broadcaster";
