@@ -4,7 +4,7 @@ An opinionated deno websockets library to help you manage websocket connections 
 
 ## Summary
 
-Writing WebSocket code with Deno is quite easy, but writing `myWebsocket.send(arbitraryJsonString)` is anything but simple. In addition, managing websocket connections by yourself is no fun. 
+Writing WebSocket code with Deno is easy, but writing `myWebsocket.send(arbitraryJsonString)` is anything but simple. In addition, managing websocket connections by yourself is no fun. 
 
 Broadcaster gives you the ability to define a few interfaces which tell you how your client/server will communicate over the websocket and then pass in the implementations to a "connect" function. From there, your connections will have "send" function which ensures the messages you're sending over the socket are typed and handled by the other side of the socket.
 
@@ -52,7 +52,7 @@ export type ServerHandlers = {
 
 `my-client.ts`
 
-Here we connect to the WebSocker server from a browser and implement the handlers we defined in our ClientHandlers interface.
+Here we connect to the WebSocket server from a browser and implement the handlers we defined in our ClientHandlers interface.
 
 ```ts
 import { connect } from "@aburd/broadcaster";
