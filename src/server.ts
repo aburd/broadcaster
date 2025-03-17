@@ -75,9 +75,9 @@ export type CreateSocketOpts = {
 };
 
 /**
- * Creates a socket group, which holds a group of websockets that
+ * Creates a SocketGroup, which holds a group of websockets that
  * will have the passed handlers bound to them, meaning any socket added
- * will receive any events that occur
+ * will receive any messages that are broadcast
  */
 export function createSocketGroup<
   ServerHandlers extends Record<string, ServerHandler<ClientHandlers>>,
